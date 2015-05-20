@@ -1,0 +1,16 @@
+{
+    "contents" : "library(raster)\n\nsource(\"C:/Share/pjantz/Scripts/LCCVP/handy_functions.R\")\n\n# Read multiband tiff to data frame\nxx <- as.data.frame(getValues(brick(\"C:/Share/LCC-VP/Parks/GRSM/analysis/spruce_fir/inputs/clim_srad/biovars_1981-2010_srad_masked.tif\")))\n\n# Correlate rasters, omitting NA values\nyy <- cor(xx, use = \"pairwise.complete.obs\")\n\n# Variable names\nvnam <- c(\"Ann Mean T\",\"Mean Diurnal Range\",\"Isothermality\",\"T Seasonality\",\n         \"Max T Warmest Month\",\"Min T Coldest Month\",\"T Annual Range\",\"Mean T of Wettest Q\",\n         \"Mean T of Driest Q\",\"Mean T of Warmest Q\",\"Mean T of Coldest Q\",\"Annual Ppt\",\n         \"Ppt of Wettest Month\",\"Ppt of Driest Month\",\"Ppt Seasonality\",\"Ppt of Wettest Q\",\n         \"Ppt of Driest Q\",\"Ppt of Warmest Q\",\"Ppt of Coldest Q\",\"srad\")\n\ncolnames(yy) <- vnam\nrownames(yy) <- vnam\n\n# Matrix plot of variable correlations ordered by principle components\ncircle.corr( yy, order = TRUE, bg = \"gray50\",\n             col = colorRampPalette(c(\"blue\",\"white\",\"red\"))(100) )\n",
+    "created" : 1367337546890.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1281648649",
+    "id" : "C5C3C26D",
+    "lastKnownWriteTime" : 1367342346,
+    "path" : "C:/Share/pjantz/Scripts/LCCVP/raster_var_correlations.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

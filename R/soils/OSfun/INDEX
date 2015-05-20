@@ -1,0 +1,37 @@
+II                      Returns input
+OSfun-package           Oliver Soong's helpful functions
+addnames                Add names to an object
+array2list              Convert an array to a list
+c.factor                Functions to concatenate factors while merging
+                        levels
+colorbar                Add a color bar to a plot
+deattr                  Remove all attributes from an R object, except
+                        for names
+escape                  Escape a string for programmatic use
+fill.mat                Given a matrix in long form, convert to wide
+findEnv                 Find the containing environment
+fixlme4                 Improvements to lme4
+fmt                     Round numbers, to significant digits if desired
+loadget                 Functions to import saved R objects
+myCompress              Compress or decompress R objects in memory
+mydiff                  Function to apply a generic function to
+                        adjacent objects
+mydist                  A more convenient function to calculate
+                        distance matrices
+mymatch                 Convenient matching combined with subsetting
+mymd5                   Calculate an md5 hash for the given R objects
+mymultiplot             Simplified generation of multi-panel plots
+myscale                 Rescale continuous values into discrete values
+mytapply                Allow replacement of NA values in tapply
+na.fill                 Functions to handle NA and NULL values
+proj4strings            Common proj4 strings
+read.shp                Read and write shapefiles
+read.xls                Read Excel workbooks and Access databases
+readRaster              Intelligently handle rasters with both +datum
+                        and +towgs84 in a PROJ.4 string
+reset                   Reset .GlobalEnv and attached files
+setwd                   Set working directory and change window title
+skew                    Calculate skewness
+sortTable               Sort a given table according to given columns
+src                     Functions to help segment multi-step analyses
+write.rlist             Recursively write lists

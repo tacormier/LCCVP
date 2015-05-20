@@ -1,0 +1,15 @@
+{
+    "contents" : "#Create 12-month stacks and Calculate bioclimatic variables from 800m PRISM monthly normals.\n#Tina Cormier\n\n#load libraries\nlibrary(raster)\n#library(rgdal)\nlibrary(dismo)\n\n#source parameter file for input and output directories\nsource(\"C:/Share/LCC-VP/scripts/R/LCC-VP_parameters.R\")\n#Reads in variables: park, bioclim.indir, bioclim.outdir\n\n#set up logfile\n# redirect output to file (for selected variables)\ndate <- gsub(\":\", \"\", gsub(\" \", \"_\", date()))\nlog.file <- file(paste(bioclim.outdir,\"calc_prism_biovars_\", date, \"_log.txt\",sep=\"\"))\nsink(log.file)\nsink(log.file, type=\"message\")\nprint(\"*********************************************************************\")\nprint(\"************** LCC-VP_calc_PRISM_biovars.R Log *************\")\nprint(\"*********************************************************************\")\n\nprint(date)\nprint(paste(\"bioclim.indir = \", bioclim.indir, sep=\"\"))\nprint(paste(\"bioclim.outdir = \", bioclim.outdir, sep=\"\"))\n\n#names of subdirectories within bioclim.indir\nclim.vars <- c(\"ppt\", \"tmax\", \"tmin\")\n\n\n#Assumption - all files in directory will store data in separate bands\n#representing monghtly data.\n\n#Assumption - only one time step in directory (i.e. 1981 - 2010)\n#loop over files in bioclim.indir and stack.\nfor (i in clim.vars) {\n  print(i)\n  #get list of rasters\n  dir <- paste(bioclim.indir, i, \"/\", sep=\"\")\n  rasters <- list.files(dir, pattern=\".tif$\", full.names=T)\n  #stack\n  stack <- stack(rasters)\n  #Assign stack to a unique variable to use later!\n  assign(paste(i, \"_stk\", sep=\"\"), stack) \n} #end loop\n\n#Calc biovars - Round biovars to whole numbers - avoid issues with floats.\nbio.vars <- round(biovars(ppt_stk, tmin_stk, tmax_stk))\n#Write to new raster (might be able to skip this and keep in memory for modeling piece...would\n#add on to this script).\noutras <- paste(bioclim.outdir, \"biovars_1981-2010.tif\", sep=\"\")\nwriteRaster(bio.vars,outras,format=\"GTiff\", dataType=\"INT4S\")\n\n#Restore output to console\nsink()\nsink(type=\"message\")",
+    "created" : 1376945503564.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1133336845",
+    "id" : "7A1066B2",
+    "lastKnownWriteTime" : 1365434865,
+    "path" : "C:/Share/LCC-VP/scripts/R/LCC-VP_calc_biovars_PRISM.R",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

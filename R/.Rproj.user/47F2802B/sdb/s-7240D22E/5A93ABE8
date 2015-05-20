@@ -1,0 +1,15 @@
+{
+    "contents" : "##########################################################################\n# RANDOM FOREST MODEL AND RASTER PREDICTION\n##########################################################################\n# CONTACT:\n#     Jeffrey S. Evans\n#     Senior Landscape Ecologist  \n#     The Nature Conservancy\n#     Central Science/DbyD\n#     Laramie, WY 82070 \n#     jeffrey_evans@tnc.org\n#     (970) 672-6766\n##########################################################################\nrequire(randomForest)\nrequire(raster)\nrequire(rgdal)\nrequire(raster)\npath=\"C:/Share/tcormier/test/LCC-VP_test/var_sel_script_test\"\nsetwd(path)\n#source(paste(paste(path, \"CODE\", sep=\"/\"), \"functions.R\", sep=\"/\"))\nsource(\"C:/Share/tcormier/scripts/R/Evans_Functions.R\")\ninshape=\"Abundance\"\n\n# NUMBER OF BOOTSTRAP REPLICATES\nb=501 \n  \n# BUILD MODEL DATA  \nrlist=list.files(paste(path, \"DATA\", sep=\"/\"), pattern=\"img$\", full.names=TRUE) \n  rlist <- rlist[-c(9,10,12,14,16)]\n    rlist <- rlist[-c(1,13)]  \n      xvars <- stack(rlist) \nsdata <- readOGR(dsn=paste(path, \"DATA\", sep=\"/\"), layer=inshape)\n  sdata@data$ABUN <- sdata@data$ABUN + 1  \nsdata@data <- data.frame(sdata@data, extract(xvars, sdata))\n\n# TEST FOR MULTI-COLINEARITY\ncl <- MultiColinear(sdata@data[,4:ncol(sdata@data)], p=0.05)\n xdata <- sdata@data[,4:ncol(sdata@data)]  \n  for(l in cl) {\n    cl.test <- xdata[,-which(names(xdata)==l)]\n\t  print(paste(\"REMOVE VARIABLE\", l, sep=\": \"))\n    MultiColinear(cl.test, p=0.05)\t\n  }\nfor(l in cl) { sdata@data <- sdata@data[,-which(names(sdata@data)==l)] }\n\n# CREATE X,Y DATA\nydata <- sdata@data[,\"ABUN\"]\nxdata <- sdata@data[,4:ncol(sdata@data)]\n\n# RUN RANDOM FORESTS MODEL SELECTION FUNCTION\n( rf.model <- rf.modelSel(x=xdata, y=ydata, imp.scale=\"mir\", ntree=b) ) \n\n# CREATE NEW XDATA BASED ON SELECTED MODEL AND RUN FINAL RF MODEL\nsel.vars <- rf.model$SELVARS\n  rf.data <- data.frame(y=ydata, xdata[,sel.vars])\t\n( rf.final <- randomForest(y=rf.data[,1], x=rf.data[,2:ncol(rf.data)], ntree=b, \n                           importance=TRUE) )\n\n# Predict abundance regression model\npredict(xvars, rf.final, file=\"AbunRegression.img\", na.rm=TRUE, overwrite=TRUE,\n       progress=\"window\") \n\n# Premutate model (not run, takes time)\n#( rf.test <- rf.Permutation(y=rf.data[,1], x=rf.data[,2:ncol(rf.data)], nperm=999,\n#                            ntree=501) )\n\t\t\t\t\t\t\t\n\t   ",
+    "created" : 1375712599017.000,
+    "dirty" : true,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3760805691",
+    "id" : "5A93ABE8",
+    "lastKnownWriteTime" : 1375713023,
+    "path" : "C:/Share/tcormier/scripts/R/RF_REGRESSION_MODEL.R",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

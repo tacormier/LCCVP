@@ -1,0 +1,10 @@
+Package: OSfun
+Type: Package
+Title: Oliver Soong's helpful functions
+Version: 74.0
+Date: 2013-01-29
+Author: Oliver Soong
+Maintainer: Oliver Soong <osoong+OSfun@gmail.com>
+Description: A miscellaneous collection of functions I find useful.
+License: BSD
+Built: R 2.15.2; ; 2013-01-30 02:24:29 UTC; windows
